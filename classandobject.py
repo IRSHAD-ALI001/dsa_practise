@@ -1,49 +1,43 @@
+#                                          classandobject.py
+class Student:
+    def __init__(self, name, roll):
+        self.name = name
+        self.roll = roll
 
-# Abstraction Example: Coffee Machine System
-# Abstraction hides implementation details and enforces a contract via abstract methods
+    def display(self):
+        print(f"Name: {self.name}, Roll No: {self.roll}")
 
-from abc import ABC, abstractmethod
+# Object
+s1 = Student("Irshad", 101)
+s1.display()
 
-class CoffeeMachine(ABC):
-    @abstractmethod
-    def brew_coffee(self):
-        # Abstract method to be implemented by subclasses
-        pass
-    
-    @abstractmethod
-    def clean_machine(self):
-        # Abstract method to be implemented by subclasses
-        pass
 
-class EspressoMachine(CoffeeMachine):
-    def brew_coffee(self):
-        return "Brewing a strong espresso with high pressure"
-    
-    def clean_machine(self):
-        return "Cleaning espresso machine: flushing water through system"
 
-class CappuccinoMachine(CoffeeMachine):
-    def brew_coffee(self):
-        return "Brewing cappuccino with steamed milk foam"
-    
-    def clean_machine(self):
-        return "Cleaning cappuccino machine: rinsing milk frother"
 
-# Example usage
-def main():
-    espresso = EspressoMachine()
-    cappuccino = CappuccinoMachine()
-    
-    print(espresso.brew_coffee())
-    print(espresso.clean_machine())
-    print(cappuccino.brew_coffee())
-    print(cappuccino.clean_machine())
-    
-    # Cannot instantiate abstract class
-    # machine = CoffeeMachine()  # TypeError
 
-if __name__ == "__main__":
-    main()
+
+#                                          encapsulation.py
+class ATM:
+    def __init__(self, balance):
+        self.__balance = balance  # private variable
+
+    def deposit(self, amount):
+        self.__balance += amount
+
+    def withdraw(self, amount):
+        if amount <= self.__balance:
+            self.__balance -= amount
+        else:
+            print("Insufficient Balance!")
+
+    def get_balance(self):
+        return self.__balance
+
+# Object
+my_atm = ATM(5000)
+my_atm.deposit(1000)
+my_atm.withdraw(2000)
+print("Remaining Balance:", my_atm.get_balance())
 
 
 
@@ -51,113 +45,53 @@ if __name__ == "__main__":
 
 
 
-# Polymorphism Example: Payment Processing System
-# Polymorphism allows different classes to implement the same method differently
-
-class PaymentMethod:
-    def process_payment(self, amount):
-        # Base method to be overridden
+#                                   abstraction.py
+class WashingMachine:
+    def __init__(self):
         pass
 
-class CreditCard(PaymentMethod):
-    def __init__(self, card_number, card_holder):
-        self.card_number = card_number
-        self.card_holder = card_holder
-    
-    # Override process_payment
-    def process_payment(self, amount):
-        return f"Processed ${amount} payment via Credit Card ending in {self.card_number[-4:]} for {self.card_holder}"
+    def start(self):
+        self.__fill_water()
+        self.__add_detergent()
+        self.__start_wash()
 
-class PayPal(PaymentMethod):
-    def __init__(self, email):
-        self.email = email
-    
-    # Override process_payment
-    def process_payment(self, amount):
-        return f"Processed ${amount} payment via PayPal account {self.email}"
+    def __fill_water(self):
+        print("Filling water...")
 
-# Function to demonstrate polymorphism
-def make_payment(payment_method, amount):
-    print(payment_method.process_payment(amount))
+    def __add_detergent(self):
+        print("Adding detergent...")
 
-# Example usage
-def main():
-    credit_card = CreditCard("1234567890123456", "John Doe")
-    paypal = PayPal("john.doe@example.com")
-    
-    # Polymorphic behavior: same method, different implementations
-    make_payment(credit_card, 100)
-    make_payment(paypal, 50)
+    def __start_wash(self):
+        print("Washing clothes...")
 
-if __name__ == "__main__":
-    main()
+# User only calls:
+wm = WashingMachine()
+wm.start()
 
 
 
 
 
-
-
-
-# Inheritance Example: Vehicle Rental System
-# Inheritance allows child classes (Car, Bike) to inherit from a parent class (Vehicle)
-
+#                                          inhertance.py
 class Vehicle:
-    def __init__(self, brand, model, rental_price_per_day):
+    def __init__(self, brand):
         self.brand = brand
+
+    def drive(self):
+        print(f"{self.brand} vehicle is moving.")
+
+class Car(Vehicle):  # Inheritance
+    def __init__(self, brand, model):
+        super().__init__(brand)
         self.model = model
-        self.rental_price_per_day = rental_price_per_day
-        self.is_rented = False
-    
-    def rent(self):
-        if not self.is_rented:
-            self.is_rented = True
-            return f"{self.brand} {self.model} has been rented."
-        return "Vehicle already rented."
-    
-    def return_vehicle(self):
-        if self.is_rented:
-            self.is_rented = False
-            return f"{self.brand} {self.model} has been returned."
-        return "Vehicle was not rented."
-    
-    def get_details(self):
-        return f"{self.brand} {self.model}, ${self.rental_price_per_day}/day"
 
-# Car class inherits from Vehicle
-class Car(Vehicle):
-    def __init__(self, brand, model, rental_price_per_day, num_seats):
-        super().__init__(brand, model, rental_price_per_day)
-        self.num_seats = num_seats
-    
-    # Extend parent method
-    def get_details(self):
-        return f"Car: {super().get_details()}, {self.num_seats} seats"
+    def play_music(self):
+        print(f"Playing music in {self.model}.")
 
-# Bike class inherits from Vehicle
-class Bike(Vehicle):
-    def __init__(self, brand, model, rental_price_per_day, has_helmet):
-        super().__init__(brand, model, rental_price_per_day)
-        self.has_helmet = has_helmet
-    
-    # Extend parent method
-    def get_details(self):
-        helmet_status = "with helmet" if self.has_helmet else "without helmet"
-        return f"Bike: {super().get_details()}, {helmet_status}"
-
-# Example usage
-def main():
-    car = Car("Toyota", "Camry", 50, 5)
-    bike = Bike("Honda", "CBR", 20, True)
-    print(car.get_details())
-    print(bike.get_details())
-    print(car.rent())
-    print(bike.rent())
-    print(car.return_vehicle())
-    print(bike.return_vehicle())
-
-if __name__ == "__main__":
-    main()
+# Object
+c = Car("Toyota", "Innova")
+c.drive()
+c.play_music()
 
 
 
@@ -166,240 +100,192 @@ if __name__ == "__main__":
 
 
 
-# Encapsulation Example: Bank Account System
-# Encapsulation hides data (private attributes) and exposes only necessary methods
 
+#                                     polymorphism.py
+class Shape:
+    def draw(self):
+        print("Drawing a shape.")
+
+class Circle(Shape):
+    def draw(self):  # Method overriding
+        print("Drawing a circle.")
+
+class Square(Shape):
+    def draw(self):
+        print("Drawing a square.")
+
+# Objects
+shapes = [Circle(), Square(), Shape()]
+for s in shapes:
+    s.draw()
+
+
+
+
+
+
+
+
+
+
+#                 wholee oops
+class Animal:
+    # Class variable
+    kingdom = "Animalia"
+
+    def __init__(self, name, sound):
+        self.name = name              # Public attribute
+        self._mood = "happy"          # Protected attribute
+        self.__sound = sound          # Private attribute
+
+    # Encapsulation: Getter for private variable
+    def get_sound(self):
+        return self.__sound
+
+    # Encapsulation: Setter for private variable
+    def set_sound(self, sound):
+        self.__sound = sound
+
+    # Abstraction: Hiding complex logic
+    def describe(self):
+        print(f"{self.name} is feeling {self._mood} and says '{self.__sound}'.")
+
+    # Static method
+    @staticmethod
+    def general_info():
+        print("Animals are multicellular, eukaryotic organisms.")
+
+    # Class method
+    @classmethod
+    def kingdom_info(cls):
+        print(f"All animals belong to the {cls.kingdom} kingdom.")
+
+
+# Inheritance
+class Dog(Animal):
+    def __init__(self, name, breed):
+        # Call parent constructor
+        super().__init__(name, "woof")
+        self.breed = breed
+
+    # Polymorphism - Method Overriding
+    def describe(self):
+        print(f"{self.name} is a {self.breed}, feeling {self._mood} and says '{self.get_sound()}'.")
+
+
+# Polymorphism - Method Overloading simulation (using default args)
+def make_sound(animal, times=1):
+    for _ in range(times):
+        print(animal.get_sound())
+
+
+# Object creation
+dog = Dog("Buddy", "Golden Retriever")
+
+# Using methods
+dog.describe()
+dog.set_sound("bark!")
+make_sound(dog, 3)
+
+# Static & class method
+Dog.general_info()
+Dog.kingdom_info()
+
+
+
+
+
+
+
+
+
+
+
+#####          whole oops with bank account example
 class BankAccount:
-    def __init__(self, account_holder, account_number, initial_balance):
-        # Private attributes (using double underscore)
-        self.__account_holder = account_holder
-        self.__account_number = account_number
-        self.__balance = initial_balance
-    
-    # Public method to deposit money
+    # Class variable (shared by all accounts)
+    bank_name = "Happy Bank of Python"
+
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.__balance = balance  # Encapsulated (private)
+
+    # Encapsulation: getter
+    def get_balance(self):
+        return self.__balance
+
+    # Deposit method with abstraction
     def deposit(self, amount):
         if amount > 0:
             self.__balance += amount
-            return f"Deposited ${amount}. New balance: ${self.__balance}"
-        return "Invalid deposit amount"
-    
-    # Public method to withdraw money
+            print(f"₹{amount} deposited. New balance: ₹{self.__balance}")
+        else:
+            print("Invalid deposit amount.")
+
+    # Withdraw method with abstraction
     def withdraw(self, amount):
-        if amount > 0 and amount <= self.__balance:
+        if 0 < amount <= self.__balance:
             self.__balance -= amount
-            return f"Withdrew ${amount}. New balance: ${self.__balance}"
-        return "Invalid or insufficient funds"
-    
-    # Getter method to access private balance
-    def get_balance(self):
-        return f"Balance for {self.__account_holder}: ${self.__balance}"
-    
-    # Getter method for account details
-    def get_account_info(self):
-        return f"Account Holder: {self.__account_holder}, Account Number: {self.__account_number}"
+            print(f"₹{amount} withdrawn. New balance: ₹{self.__balance}")
+        else:
+            print("Insufficient balance or invalid amount.")
 
-# Example usage
-def main():
-    account = BankAccount("John Doe", "1234567890", 1000)
-    print(account.get_account_info())
-    print(account.get_balance())
-    print(account.deposit(500))
-    print(account.withdraw(200))
-    print(account.get_balance())
-    # Trying to access private attribute directly will fail
-    # print(account.__balance)  # AttributeError
+    # Abstraction + Polymorphism: will be overridden
+    def display_details(self):
+        print(f"Account Owner: {self.owner}")
+        print(f"Current Balance: ₹{self.__balance}")
 
-if __name__ == "__main__":
-    main()
+    # Static method
+    @staticmethod
+    def bank_info():
+        print("Welcome to the Happy Bank of Python. We value your happiness!")
+
+    # Class method
+    @classmethod
+    def show_bank_name(cls):
+        print(f"This account belongs to: {cls.bank_name}")
 
 
+# Inheritance
+class SavingsAccount(BankAccount):
+    def __init__(self, owner, balance=0, interest_rate=5.0):
+        super().__init__(owner, balance)
+        self.interest_rate = interest_rate
+
+    # Polymorphism - Overriding method
+    def display_details(self):
+        super().display_details()
+        print(f"Interest Rate: {self.interest_rate}%")
+
+
+# Creating real-world object
+my_account = SavingsAccount("Irshad", 1000)
+
+# Using OOP features
+my_account.display_details()
+my_account.deposit(500)
+my_account.withdraw(200)
+print("Balance accessed through getter:", my_account.get_balance())
+
+# Static & class methods
+SavingsAccount.bank_info()
+SavingsAccount.show_bank_name()
 
 
 
 
-# Library Management System demonstrating OOP concepts
 
-from abc import ABC, abstractmethod
-import datetime
 
-# Abstraction: Abstract base class for library items
-class LibraryItem(ABC):
-    @abstractmethod
-    def get_details(self):
-        pass
-    
-    @abstractmethod
-    def calculate_fine(self, days_overdue):
-        pass
 
-# Encapsulation: Book class with private attributes and public methods
-class Book(LibraryItem):
-    def __init__(self, title, author, isbn, copies_available):
-        self.__title = title  # Private attribute
-        self.__author = author
-        self.__isbn = isbn
-        self.__copies_available = copies_available
-        self.__borrowed_by = None
-        self.__due_date = None
-    
-    # Getter methods (Encapsulation)
-    def get_title(self):
-        return self.__title
-    
-    def get_author(self):
-        return self.__author
-    
-    def get_copies_available(self):
-        return self.__copies_available
-    
-    # Methods for borrowing and returning
-    def borrow_book(self, member_id):
-        if self.__copies_available > 0:
-            self.__copies_available -= 1
-            self.__borrowed_by = member_id
-            self.__due_date = datetime.datetime.now() + datetime.timedelta(days=14)
-            return True
-        return False
-    
-    def return_book(self):
-        if self.__borrowed_by:
-            self.__copies_available += 1
-            self.__borrowed_by = None
-            self.__due_date = None
-            return True
-        return False
-    
-    # Implementing abstract method (Polymorphism)
-    def get_details(self):
-        return f"Book: {self.__title} by {self.__author} (ISBN: {self.__isbn}, Copies: {self.__copies_available})"
-    
-    def calculate_fine(self, days_overdue):
-        fine_per_day = 1.0  # $1 per day
-        return days_overdue * fine_per_day
 
-# Inheritance: Magazine class inherits from LibraryItem
-class Magazine(LibraryItem):
-    def __init__(self, title, issue_number, publisher):
-        self.__title = title
-        self.__issue_number = issue_number
-        self.__publisher = publisher
-        self.__is_borrowed = False
-    
-    def borrow_magazine(self):
-        if not self.__is_borrowed:
-            self.__is_borrowed = True
-            return True
-        return False
-    
-    def return_magazine(self):
-        if self.__is_borrowed:
-            self.__is_borrowed = False
-            return True
-        return False
-    
-    # Overriding abstract method (Polymorphism)
-    def get_details(self):
-        status = "Borrowed" if self.__is_borrowed else "Available"
-        return f"Magazine: {self.__title}, Issue {self.__issue_number}, Publisher: {self.__publisher} ({status})"
-    
-    def calculate_fine(self, days_overdue):
-        fine_per_day = 0.5  # $0.5 per day for magazines
-        return days_overdue * fine_per_day
 
-# Encapsulation: LibraryMember class
-class LibraryMember:
-    def __init__(self, member_id, name, email):
-        self.__member_id = member_id
-        self.__name = name
-        self.__email = email
-        self.__borrowed_items = []
-    
-    def get_member_info(self):
-        return f"Member: {self.__name} (ID: {self.__member_id}, Email: {self.__email})"
-    
-    def borrow_item(self, item):
-        if isinstance(item, Book):
-            if item.borrow_book(self.__member_id):
-                self.__borrowed_items.append(item)
-                return f"{self.__name} borrowed {item.get_details()}"
-        elif isinstance(item, Magazine):
-            if item.borrow_magazine():
-                self.__borrowed_items.append(item)
-                return f"{self.__name} borrowed {item.get_details()}"
-        return "Unable to borrow item"
-    
-    def return_item(self, item):
-        if item in self.__borrowed_items:
-            if isinstance(item, Book):
-                item.return_book()
-            elif isinstance(item, Magazine):
-                item.return_magazine()
-            self.__borrowed_items.remove(item)
-            return f"{self.__name} returned {item.get_details()}"
-        return "Item not borrowed by this member"
 
-# Library class to manage the system
-class Library:
-    def __init__(self):
-        self.__items = []
-        self.__members = []
-    
-    def add_item(self, item):
-        self.__items.append(item)
-    
-    def add_member(self, member):
-        self.__members.append(member)
-    
-    def display_inventory(self):
-        return "\n".join(item.get_details() for item in self.__items)
-    
-    def display_members(self):
-        return "\n".join(member.get_member_info() for member in self.__members)
 
-# Example usage
-def main():
-    # Create library
-    library = Library()
-    
-    # Create items
-    book1 = Book("The Great Gatsby", "F. Scott Fitzgerald", "978-0743273565", 3)
-    book2 = Book("1984", "George Orwell", "978-0451524935", 2)
-    magazine1 = Magazine("National Geographic", "2025-07", "NatGeo")
-    
-    # Add items to library
-    library.add_item(book1)
-    library.add_item(book2)
-    library.add_item(magazine1)
-    
-    # Create members
-    member1 = LibraryMember("M001", "John Doe", "john@example.com")
-    member2 = LibraryMember("M002", "Jane Smith", "jane@example.com")
-    
-    # Add members to library
-    library.add_member(member1)
-    library.add_member(member2)
-    
-    # Demonstrate functionality
-    print("Library Inventory:")
-    print(library.display_inventory())
-    print("\nLibrary Members:")
-    print(library.display_members())
-    
-    # Borrowing and returning
-    print("\n" + member1.borrow_item(book1))
-    print(member2.borrow_item(magazine1))
-    print("\nUpdated Inventory:")
-    print(library.display_inventory())
-    
-    # Calculate fine (example)
-    print(f"\nFine for book1 (5 days overdue): ${book1.calculate_fine(5)}")
-    print(f"Fine for magazine1 (5 days overdue): ${magazine1.calculate_fine(5)}")
-    
-    # Return items
-    print("\n" + member1.return_item(book1))
-    print(member2.return_item(magazine1))
-    print("\nFinal Inventory:")
-    print(library.display_inventory())
 
-if __name__ == "__main__":
-    main()
+
+
+
+
+
+
+

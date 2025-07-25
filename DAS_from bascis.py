@@ -17,7 +17,7 @@
 
 
 
-############pallindrone#######
+##########################################pallindrone#######
 #n=2324444
 # def pallin(n):
     
@@ -34,7 +34,7 @@
 
 
 
-###########armstrong
+###########################################armstrong
 # n=153
 # def arm(n):
 #     num=n
@@ -47,7 +47,7 @@
 #     return result==n
 # print(arm(n))   
 
-################frequency in digit
+#############################################frequency in digit
 # def freqq(n):
 #     freq=dict()
 #     num=n
@@ -75,7 +75,7 @@
 
 
 
-##########factors
+##############################################  factors
 
 
 #n=12
@@ -107,7 +107,7 @@
 
 
 
-###############Recursion
+###############R#####################################Recursion
 
 #15 5 times
 
@@ -163,18 +163,18 @@
 
     
     
-    ##############reveerse a string using recursion
+    ##################################reveerse a string using recursion
 # def reverse_string(s):
 #     if len(s) == 0:
 #         return s
 #     else:
 #         return s[-1] + reverse_string(s[:-1])###### 
-# s = "hello"
+#s = "hello"
 # print(reverse_string(s))  # Output: "olleh" 
 
 
 
-##################reverse a list using recursion and two pointers
+#################################reverse a list using recursion and two pointers
 # def reverse_list(lst, left, right):
 #     left =0
 #     right = len(lst) - 1
@@ -182,7 +182,7 @@
 #         lst[left], lst[right] = lst[right], lst[left]
 #         left += 1
 #         right -= 1
-#     return lst
+#     return lst ###nomal case
 
 
 
@@ -197,7 +197,7 @@
 
 
 
-##########pallindrone
+######################### list pallindrone
 # def is_palindrome(s,left,right):
 #     for i in range(0,len(s)):
 #         if s[left]!=s[right]:
